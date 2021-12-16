@@ -55,3 +55,31 @@ end;
 execute UPDATE_VACCINE_STORAGE_TABLE('Downtown', 'STREET', 'KP');
 
 
+SET SERVEROUT ON;
+------------------------------------------------VACCINE_CENTER UPDATE-----------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE UPDATE_VACCINE_CENTER_TABLE(vax_center_name in VARCHAR2, column_name in VARCHAR2, column_val in VARCHAR2)
+AS
+col_name VARCHAR2(30):=column_name;
+col_val VARCHAR2(100):=column_val;
+vaccineCenterId NUMBER;
+update_query VARCHAR2(500);
+BEGIN
+  
+        select VACCINE_CENTER_ID into vaccineCenterId FROM VACCINE_CENTER where VACCINE_CENTER_NAME=vax_center_name;
+        DBMS_OUTPUT.PUT_LINE(vaccineCenterId);
+        update_query := 'UPDATE VACCINE_CENTER set '|| col_name || '=''' || col_val ||  ''' where VACCINE_CENTER_NAME=''' || vax_center_name || ''' and VACCINE_CENTER_ID=' || vaccineCenterId; 
+        DBMS_OUTPUT.PUT_LINE(update_query);
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
+        EXECUTE IMMEDIATE  'UPDATE VACCINE_CENTER set '|| col_name || '=''' || col_val ||  ''' where VACCINE_CENTER_NAME=''' || vax_center_name || ''' and VACCINE_CENTER_ID=' || vaccineCenterId; 
+COMMIT;
+EXCEPTION WHEN others then
+dbms_output.put_line('Error while inserting data into VACCINE_CENTER Table');
+rollback;
+dbms_output.put_line('Error: ');
+dbms_output.put_line(dbms_utility.format_error_stack);
+dbms_output.put_line('----------------------------------------------------------');
+end;
+/
+
+execute UPDATE_VACCINE_CENTER_TABLE('Commonwealth', 'VACCINE_CENTER_STREET', 'Ash St');
+
