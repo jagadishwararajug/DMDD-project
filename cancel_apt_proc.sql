@@ -4,10 +4,7 @@ create or replace PROCEDURE cancel_apt(email_id in VARCHAR2, apt_date in date)
 AS
   uid NUMBER;
   count_users NUMBER;
-  cnt NUMBER;
   status varchar(10);
-  prev_status VARCHAR(20);
-    date_diff NUMBER;
     vac_name varchar(20);
 BEGIN
       dbms_output.put_line('======================================');
@@ -21,22 +18,23 @@ BEGIN
       SELECT count(*) into count_users from appointment where user_id = uid and DATE_OF_APPOINTMENT=apt_date;
         dbms_output.put_line('============================================= USER COUNT ======================================' ||count_users);
      
-     
+    select distinct APPOINTMENT_STATUS into status from appointment;
+    
  if count_users = 0 then 
   dbms_output.put_line('++++++++++++++++++++++      No such appointment exists. Place an appointment first.                ++++++++++++++++++');
 
 
-elsif count_users > 0 and APPOINTMENT_STATUS = 'cancelled'
+elsif count_users > 0 and status = 'cancelled'
 then
   dbms_output.put_line('++++++++++++++++++++++      Appointment already cancelled                ++++++++++++++++++');
 
-elsif count_users > 0 and APPOINTMENT_STATUS != 'cancelled'
+elsif count_users > 0 and status = 'booked'
 then
    UPDATE appointment
     SET
         APPOINTMENT_STATUS = 'cancelled'
     WHERE
-        user_id = uid and DATE_OF_APPOINTMENT=apt_date;
+        user_id = uid and DATE_OF_APPOINTMENT=apt_date and status='booked';
 
             dbms_output.put_line('Appointment has been cancelled.');
             COMMIT;
