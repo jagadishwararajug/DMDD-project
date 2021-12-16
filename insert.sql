@@ -2,17 +2,17 @@ SET SERVEROUT ON;
 
 CREATE OR REPLACE PACKAGE INSERT_TABLES
 AS
-PROCEDURE INSERT_VACCINE_STORAGE(Vaccine_Storage_Name in VARCHAR, Address in VARCHAR, Zipcode in NUMBER);
+PROCEDURE INSERT_VACCINE_STORAGE(Vaccine_Storage_Name in VARCHAR, Street in VARCHAR, City in VARCHAR, State in VARCHAR, Zipcode in NUMBER);
 
 PROCEDURE INSERT_VACCINE_DETAILS(Vaccine_Mnf in VARCHAR, Mnf_Date in DATE, Exp_Date in DATE, Batch_No in Number, Vaccine_Storage_Facility_Id in Number);
 
-PROCEDURE INSERT_VACCINE_CENTER(Vaccine_Center_Name in VARCHAR, Vaccine_Center_Address in VARCHAR, Zipcode in NUMBER);
+PROCEDURE INSERT_VACCINE_CENTER(Vaccine_Center_Name in VARCHAR, Vaccine_Center_Street in VARCHAR, Vaccine_Center_City in VARCHAR, Vaccine_Center_State in VARCHAR, Vaccine_Center_Zipcode in NUMBER);
 
 PROCEDURE INSERT_INVENTORY(Vaccine_Center_Id in Number, Vaccine_Id in Number);
 
 PROCEDURE INSERT_VACCINE_REQUEST(Request_Date in DATE, Vaccine_Request_Mnf_Name in VARCHAR, Vaccine_Storage_Facility_Id in NUMBER, Inventory_Id in Number);
 
-PROCEDURE INSERT_UNIVERSITY(University_Name in VARCHAR, University_Address in VARCHAR, Vaccine_Center_Id in number);
+PROCEDURE INSERT_UNIVERSITY(University_Name in VARCHAR, University_Street in VARCHAR, University_City in VARCHAR, University_State in VARCHAR, University_Zip_Code in NUMBER, Vaccine_Center_Id in number);
 
 PROCEDURE INSERT_STAFF(First_Name in VARCHAR, Last_Name in VARCHAR, Gender in VARCHAR , Vaccine_Center_Id in number);
 
@@ -20,7 +20,7 @@ PROCEDURE INSERT_USERS(First_Name in VARCHAR, Last_Name in VARCHAR, Date_of_Birt
 
 PROCEDURE INSERT_IMMUNIZATION_DETAILS(Vaccine_Brand in VARCHAR, Dose_date in DATE, Vaccination_Status in VARCHAR, User_Id in NUMBER, Vaccine_Id in Number);
 
-PROCEDURE INSERT_APPOINTMENT(Date_of_Appointment in DATE, Appointment_Status in VARCHAR, User_Id in NUMBER);
+PROCEDURE INSERT_APPOINTMENT(Date_of_Appointment in DATE, Appointment_Status in VARCHAR, User_Id in NUMBER,  Vaccine_mnf_name  in VARCHAR);
 
 PROCEDURE INSERT_USER_MEDICAL_RECORD(User_Id in NUMBER, Respiratory_distress in NUMBER, Allergy in NUMBER, High_blood_pressure in NUMBER, Fever in NUMBER, Date_of_Appointment in DATE, Comments in VARCHAR);
 
@@ -33,11 +33,11 @@ end INSERT_TABLES;
 ------------------------------------------------VACCINE_STORAGE INSERT----------------------------------------------------------------------------
 CREATE OR REPLACE PACKAGE BODY INSERT_TABLES
 AS
-PROCEDURE INSERT_VACCINE_STORAGE(Vaccine_Storage_Name in VARCHAR, Address in VARCHAR, Zipcode in NUMBER)
+PROCEDURE INSERT_VACCINE_STORAGE(Vaccine_Storage_Name in VARCHAR, Street in VARCHAR, City in VARCHAR, State in VARCHAR, Zipcode in NUMBER)
 AS
 BEGIN
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
-        INSERT INTO VACCINE_STORAGE(Vaccine_Storage_Name, Address, Zipcode) VALUES (Vaccine_Storage_Name, Address, Zipcode); 
+        INSERT INTO VACCINE_STORAGE(Vaccine_Storage_Name, Street, City, State, Zipcode) VALUES (Vaccine_Storage_Name, Street, City, State, Zipcode); 
         DBMS_OUTPUT.PUT_LINE('Rows inserted in VACCINE_STORAGE Table');
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
 COMMIT;
@@ -77,11 +77,11 @@ end INSERT_VACCINE_DETAILS;
 
 ------------------------------------------------VACCINE_CENTER INSERT----------------------------------------------------------------------------
 
-PROCEDURE INSERT_VACCINE_CENTER(Vaccine_Center_Name in VARCHAR, Vaccine_Center_Address in VARCHAR, Zipcode in NUMBER)
+PROCEDURE INSERT_VACCINE_CENTER(Vaccine_Center_Name in VARCHAR, Vaccine_Center_Street in VARCHAR, Vaccine_Center_City in VARCHAR, Vaccine_Center_State in VARCHAR, Vaccine_Center_Zipcode in NUMBER)
 AS
 BEGIN
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
-        INSERT INTO VACCINE_CENTER(Vaccine_Center_Name, Vaccine_Center_Address, Zipcode) VALUES (Vaccine_Center_Name, Vaccine_Center_Address, Zipcode); 
+        INSERT INTO VACCINE_CENTER(Vaccine_Center_Name, Vaccine_Center_Street, Vaccine_Center_City, Vaccine_Center_State, Vaccine_Center_Zipcode) VALUES (Vaccine_Center_Name, Vaccine_Center_Street, Vaccine_Center_City, Vaccine_Center_State, Vaccine_Center_Zipcode); 
         DBMS_OUTPUT.PUT_LINE('Rows inserted in VACCINE_CENTER Table');
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
 COMMIT;
@@ -127,7 +127,7 @@ PROCEDURE INSERT_VACCINE_REQUEST(Request_Date in DATE, Vaccine_Request_Mnf_Name 
 AS
 BEGIN
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
-        INSERT INTO VACCINE_REQUEST(Request_Date, Vaccine_Request_Mnf_Name, Vaccine_Storage_Facility_Id) VALUES (Request_Date, Vaccine_Request_Mnf_Name, Vaccine_Storage_Facility_Id); 
+        INSERT INTO VACCINE_REQUEST(Request_Date, Vaccine_Request_Mnf_Name, Vaccine_Storage_Facility_Id, Inventory_Id ) VALUES (Request_Date, Vaccine_Request_Mnf_Name, Vaccine_Storage_Facility_Id, Inventory_Id ); 
         DBMS_OUTPUT.PUT_LINE('Rows inserted in VACCINE_REQUEST( Table');
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
 COMMIT;
@@ -145,11 +145,11 @@ end INSERT_VACCINE_REQUEST;
 
 ------------------------------------------------UNIVERSITY INSERT----------------------------------------------------------------------------
 
-PROCEDURE INSERT_UNIVERSITY(University_Name in VARCHAR, University_Address in VARCHAR, Vaccine_Center_Id in number)
+PROCEDURE INSERT_UNIVERSITY(University_Name in VARCHAR, University_Street in VARCHAR, University_City in VARCHAR, University_State in VARCHAR, University_Zip_Code in NUMBER, Vaccine_Center_Id in number)
 AS
 BEGIN
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
-        INSERT INTO UNIVERSITY(University_Name, University_Address, Vaccine_Center_Id) VALUES (University_Name, University_Address, Vaccine_Center_Id); 
+        INSERT INTO UNIVERSITY(University_Name, University_Street,  University_City, University_State, University_Zip_Code, Vaccine_Center_Id) VALUES (University_Name, University_Street,  University_City, University_State, University_Zip_Code, Vaccine_Center_Id); 
         DBMS_OUTPUT.PUT_LINE('Rows inserted in UNIVERSITY Table');
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
 COMMIT;
@@ -234,11 +234,11 @@ end INSERT_IMMUNIZATION_DETAILS;
 
 ------------------------------------------------APPOINTMENT INSERT----------------------------------------------------------------------------
 
-PROCEDURE INSERT_APPOINTMENT(Date_of_Appointment in DATE, Appointment_Status in VARCHAR, User_Id in NUMBER)
+PROCEDURE INSERT_APPOINTMENT(Date_of_Appointment in DATE, Appointment_Status in VARCHAR, User_Id in NUMBER, Vaccine_mnf_name  in VARCHAR)
 AS
 BEGIN
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
-        INSERT INTO APPOINTMENT(Date_of_Appointment, Appointment_Status, User_Id) VALUES (Date_of_Appointment, Appointment_Status, User_Id); 
+        INSERT INTO APPOINTMENT(Date_of_Appointment, Appointment_Status, User_Id, Vaccine_mnf_name) VALUES (Date_of_Appointment, Appointment_Status, User_Id, Vaccine_mnf_name); 
         DBMS_OUTPUT.PUT_LINE('Rows inserted in APPOINTMENT Table');
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
 COMMIT;
@@ -299,13 +299,13 @@ dbms_output.put_line('----------------------------------------------------------
 end INSERT_VACCINE_SHIPMENT;
 
 
-------------------------------------------------VACCINE_SHIPMENT INSERT----------------------------------------------------------------------------
+------------------------------------------------VACCINE_BATCH_INFORMATION INSERT----------------------------------------------------------------------------
 
-PROCEDURE INSERT_VACCINE_BATCH_INFORMATION(Shipment_Id in NUMBER, Vaccine_Manufacturer_Name in VARCHAR)
+PROCEDURE INSERT_VACCINE_BATCH_INFORMATION( Shipment_Id in NUMBER, Vaccine_Manufacturer_Name in VARCHAR)
 AS
 BEGIN
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
-        INSERT INTO VACCINE_BATCH_INFORMATION(Shipment_Id, Vaccine_Manufacturer_Name) VALUES (Shipment_Id, Vaccine_Manufacturer_Name); 
+        INSERT INTO VACCINE_BATCH_INFORMATION( Shipment_Id, Vaccine_Manufacturer_Name) VALUES ( Shipment_Id, Vaccine_Manufacturer_Name); 
         DBMS_OUTPUT.PUT_LINE('Rows inserted in VACCINE_BATCH_INFORMATION Table');
         DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------------------------');
 COMMIT;
