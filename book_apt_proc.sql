@@ -59,4 +59,4 @@ END;
 
 
 
-exec book_apt('u.s@gmail.com', '08-FEB-21', 'pfizer');
+exec book_apt('c.b@gmail.com', '08-FEB-21', 'pfizer');
